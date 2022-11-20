@@ -4,7 +4,7 @@
 // purpose: node classes used while building a parse tree for
 //              the arithmetic expression
 // version: Fall 2022
-//  author: Joe Crumpton / Ed Swan
+//  author: Corbin T. Rochelle
 //*****************************************************************************
 
 #include "parse_tree_nodes.h"

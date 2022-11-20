@@ -1,6 +1,6 @@
 ###############################################################################
 # purpose: makefile for Project Part 2
-# author:  Joe Crumpton / Ed Swan
+# author:  Corbin T. Rochelle
 #
 # 'make'        build executable file
 # 'make clean'  removes all intermediate (lex.yy.c and *.o) and executable files
