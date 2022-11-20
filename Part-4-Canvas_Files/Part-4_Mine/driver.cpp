@@ -8,72 +8,11 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <iomanip>
 #include "parser.h"
 #include "lexer.h"
+#include "parse_tree_nodes.h"
 
-ostream& operator<<(ostream& os, ProgramNode& pn);
-ostream& operator<<(ostream& os, BlockNode& bn);
-ostream& operator<<(ostream& os, StatementNode& sn);
-ostream& operator<<(ostream& os, ExpressionNode& en);
-ostream& operator<<(ostream& os, SimpleExpressionNode& sen);
-ostream& operator<<(ostream& os, TermNode& tn);
-ostream& operator<<(ostream& os, FactorNode& fn);
-//-----------------------------------------------------
-ostream& operator<<(ostream& os, ProgramNode& pn) {
-    os << endl << indent(pn._level) << "(program ";
-    os << *(pn.block);
-    os << endl << indent(pn._level) << "program) ";
-    return os;
-}
-ostream& operator<<(ostream& os, BlockNode& bn) {
-    os << endl << indent(bn._level) << "(block ";
-    os << *(bn.statement);
-    os << endl << indent(bn._level)  << "block) ";
-    return os;
-}
-StatementNode::~StatementNode() {}
-ostream& operator<<(ostream& os, StatementNode& sn) {
-    sn.printTo(os);
-    return os;
-}
-ostream& operator<<(ostream& os, ExpressionNode& en) {
-    os << endl << indent(en._level) << "(expression ";
-    os << *(en.simpleExpression);
-    if (en.simpleExpression2 != nullptr) {
-        os << endl << indent(en._level) << en.restExpressionOps[0] << " ";
-        os << *(en.simpleExpression2);
-    }
-    os << endl << indent(en._level) << "expression) ";
-    return os;
-}
-ostream& operator<<(ostream& os, SimpleExpressionNode& sen) {
-    os << endl << indent(sen._level) << "(simple_exp ";
-    os << *(sen.firstTerm);
-    int length = sen.restTerms.size();
-    for (int i =0; i < length; i++) {
-        os << endl << indent(sen._level) << sen.restSimpleExpressionOps[i] << " ";
-        os << *(sen.restTerms[i]);
-    }
-    os << endl << indent(sen._level) << "simple_exp) ";
-    return os;
-}
-ostream& operator<<(ostream& os, TermNode& tn) {
-    os << endl << indent(tn._level) << "(term ";
-    os << *(tn.firstFactor);
-    int length = tn.restFactor.size();
-    for (int i =0; i < length; i++) {
-        os << endl << indent(tn._level) << tn.restTermOps[i] << " ";
-        os << *(tn.restFactor[i]);
-    }
-    os << endl << indent(tn._level) << "term) ";
-    return os;
-}
-FactorNode::~FactorNode() {}
-ostream& operator<<(ostream& os, FactorNode& fn) {
-    fn.printTo(os);
-    return os;
-}
-//-----------------------------------------------------
 
 using namespace std;
 
@@ -142,14 +81,18 @@ int main(int argc, char* argv[]) {
     cout << endl << "*** Print the Tree ***" << endl;
     cout << *root << endl << endl;
 
+    // Interpret the tree
+    cout << "*** Interpret the Tree ***" << endl;
+    root->interpret();
+    cout << endl << endl;
+
     // Print out the symbol table
-    cout << endl << "*** User Defined Symbols ***" << endl;
-    set<string>::iterator it;
-    for (it = symbolTable.begin(); it != symbolTable.end(); ++it) {
-        cout << *it << endl;
-    }
-    cout << endl;
+    cout << "*** Print the Symbol Table ***" << endl;
+    symbolTableT::iterator it;
+    for(it = symbolTable.begin(); it != symbolTable.end(); ++it )
+      cout << setw(8) << it->first << ": " << it->second << endl;
     
+    cout << endl;
     // Delete the tree
     cout << "*** Delete the Tree ***" << endl;
     delete root;

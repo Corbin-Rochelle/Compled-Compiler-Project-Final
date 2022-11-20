@@ -60,12 +60,12 @@ AND         { return TOK_AND; }
  /* Useful Abstraction Lexemes */
 [A-Z][A-Z0-9]*  { if (strlen(yytext) < 9) {return TOK_IDENT;} else return TOK_UNKNOWN; }
 [0-9]+\.[0-9]+  { return TOK_FLOATLIT; }
-'[A-Za-z \.,\:=&0-9\+\-!\?\(\)]*'      { if (strlen(yytext) < 81) {return TOK_STRINGLIT;} else return TOK_UNKNOWN; }
+'[A-Za-z 0-9\.\,\$\^%!&\?'\(\)\;\-/\:\>\<=]*'      { if (strlen(yytext) < 81) {return TOK_STRINGLIT;} else return TOK_UNKNOWN; }
 [0-9]* { return TOK_INTLIT; }
 
 
  /* Miscellaneous */
-\{[A-Za-z 0-9\.\,\$\^%!&\?'\(\)]*\}
+\{[A-Za-z 0-9\.\,\$\^%!&\?'\(\)\;\-/\:=]*\}
 [ \t\r\n]+
 
  /* Found an unknown character */
